@@ -1,0 +1,10 @@
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.env
+
+# RL Project Specifics
+agents/*.zip
+data/raw/*.csv
+.pytest_cache/
