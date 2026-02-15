@@ -1,0 +1,12 @@
+torch
+gymnasium
+stable-baselines3
+numpy
+pandas
+matplotlib
+fastapi
+uvicorn
+pydantic
+pytest
+python-dotenv
+
