@@ -1,4 +1,6 @@
 Deep Reinforcement Learning Trading Simulator
+
+
 📌 Project Overview
 This project implements an autonomous financial trading agent using Deep Reinforcement Learning (DRL). Unlike traditional rule-based bots, this simulator uses a Proximal Policy Optimization (PPO) algorithm to learn optimal trading strategies (Buy, Sell, Hold) by interacting with a custom-built market environment. The system is designed to maximize cumulative returns while managing risk through a penalized reward function.
 
