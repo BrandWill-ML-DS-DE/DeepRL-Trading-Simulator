@@ -1,66 +1,63 @@
-Deep Reinforcement Learning Trading Simulator
+# 📈 Deep Reinforcement Learning Trading Framework
+
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Gymnasium](https://img.shields.io/badge/Gymnasium-RL_Environment-00d1b2)](https://gymnasium.farama.org/)
+[![Stable Baselines3](https://img.shields.io/badge/Stable--Baselines3-PPO-FF6F00)](https://stable-baselines3.readthedocs.io/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-005571?logo=fastapi)](https://fastapi.tiangolo.com/)
+
+An end-to-end Reinforcement Learning (RL) pipeline designed for automated financial decision-making. This project features a custom-built market simulator and a **Proximal Policy Optimization (PPO)** agent trained to maximize risk-adjusted returns through continuous interaction with historical OHLCV data.
+
+---
+
+## 🧠 System Design & Logic
+
+This framework demonstrates a rigorous engineering approach to applying RL to non-stationary financial time series:
+
+### 1. Custom Gymnasium Environment
+I developed `TradingEnv`, a custom environment that simulates a brokerage account. It includes stateful balance management, share tracking, and a **penalized reward function** designed to discourage excessive drawdowns and promote capital preservation.
 
 
-📌 Project Overview
-This project implements an autonomous financial trading agent using Deep Reinforcement Learning (DRL). Unlike traditional rule-based bots, this simulator uses a Proximal Policy Optimization (PPO) algorithm to learn optimal trading strategies (Buy, Sell, Hold) by interacting with a custom-built market environment. The system is designed to maximize cumulative returns while managing risk through a penalized reward function.
 
-🛠️ Tech Stack
-Language: Python 3.x
+### 2. State Space Engineering
+The observation space consists of normalized **OHLCV** (Open, High, Low, Close, Volume) data. By normalizing these inputs, the agent can perceive price momentum and volatility patterns independently of absolute price scales, improving generalization across different tickers.
 
-RL Framework: Stable-Baselines3 (PPO implementation)
+### 3. PPO Algorithm
+The project utilizes **Proximal Policy Optimization (PPO)** for its superior stability. Financial environments are notoriously "noisy"; PPO's clipped objective function prevents the policy from making catastrophic updates based on market outliers.
 
-Environment: Gymnasium (Custom OpenAI Gym interface)
+---
 
-Data Science: Pandas, NumPy, Matplotlib
+## 🛠 Tech Stack
 
-Deployment: FastAPI (for real-time inference), Docker
+| Component | Technology | Role |
+| :--- | :--- | :--- |
+| **RL Framework** | Stable-Baselines3 | Production-grade PPO and policy network implementation. |
+| **Simulation** | Gymnasium | Standardized interface for agent-environment interaction. |
+| **Inference API** | FastAPI | High-speed prediction service for real-time trade signals. |
+| **Data Handling** | Pandas / NumPy | Vectorized preprocessing of market datasets. |
+| **CI/CD** | GitHub Actions | Automated linting and environment API validation. |
 
-🏗️ Core Components
-1. Custom Trading Environment (trading_env.py)
-A specialized Gymnasium environment that simulates a brokerage account:
+---
 
-Observation Space: A continuous box of normalized market features (Open, High, Low, Close, Volume).
+## 🚀 Engineering Highlights
 
-Action Space: Discrete (0: Hold, 1: Buy, 2: Sell).
+* **Robust Environment Validation:** Before training, the system executes `check_env(env)` to ensure the Gymnasium implementation adheres to API specifications, preventing silent bugs in observation or action spaces.
+* **Production Inference Service:** The model is wrapped in a FastAPI service (`serve.py`) that accepts raw market states and returns a deterministic action (Buy/Sell/Hold) with **sub-10ms latency**.
+* **Automated Testing:** Includes unit tests for environment initialization, ensuring that observation shapes and initial portfolio balances remain consistent across diverse datasets.
 
-Reward Function: Calculated as the change in Net Worth (Balance + Shares × Price). Penalties are applied for excessive drawdowns to encourage risk-averse behavior.
+---
 
-2. The DRL Agent (train.py)
-Utilizes the PPO (Proximal Policy Optimization) algorithm, chosen for its stability in non-stationary financial environments.
+## 📊 Evaluation & Strategy Performance
 
-Training Loop: The agent plays through thousands of historical episodes (e.g., AAPL stock data) to learn price patterns and momentum.
+Training progress is monitored via TensorBoard, focusing on `explained_variance` and `approx_kl`. 
 
-Validation: Backtested against "out-of-sample" data to ensure the strategy generalizes beyond the training set.
+> **Metric Focus:** While raw profit is the goal, the reward function is tuned for the **Sharpe Ratio**, rewarding the agent for achieving returns with lower volatility rather than simply taking high-leverage gambles.
 
-3. Production Inference API (serve.py)
-A FastAPI wrapper that allows external systems to query the trained model:
+---
 
-Endpoint: /predict
+## 🏁 Quick Start
 
-Input: Current market OHLCV data.
-
-Output: The agent's recommended action and a confidence score.
-
-🚀 Getting Started
-Prerequisites
-Bash
-pip install gymnasium stable-baselines3 pandas fastapi uvicorn
-Usage
-Train the Agent:
-
-Bash
-python train.py --data datasets/AAPL.csv
-Start the Inference Server:
-
-Bash
-uvicorn serve:app --reload
-Test the Prediction:
-
-Bash
-curl -X POST "http://localhost:8000/predict" -H "Content-Type: application/json" -d '{"ohlcv": [150.0, 155.0, 149.0, 153.0, 1000000]}'
-📊 Results & Key Metrics
-Profitability: Outperformed baseline Buy-and-Hold strategies in high-volatility scenarios.
-
-Latency: Inference time optimized to <10ms, suitable for high-frequency signal generation.
-
-Robustness: Demonstrated ability to transition from "bull" to "bear" markets within a single test episode.
+### 1. Installation
+```bash
+git clone [https://github.com/your-username/rl-trading-framework.git](https://github.com/your-username/rl-trading-framework.git)
+cd rl-trading-framework
+pip install -r requirements.txt
