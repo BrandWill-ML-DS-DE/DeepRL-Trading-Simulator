@@ -85,14 +85,14 @@ uvicorn serve:app --host 0.0.0.0 --port 8000
 
 | Metric | Value |
 |--------|-------|
-| Dice Score | ~0.78 (example) |
+| Sharpe Ratio | X |
    
 ---
 
-## 📉 Future Clinical Roadmap
+## 📉 Future Roadmap
 
-* **[ ] Attention U-Net:** Implement Attention Gates to focus the model on small, sub-centimeter nodules.
-* **[ ] Malignancy Classifier:** Use extracted Radiomics features to train a Random Forest classifier.
-* **[ ] 3D Slicer Plugin:** Integrate the model directly into clinical viewing software.
+* **[ ] Multi-Asset Support:** Extend the environment to handle a portfolio of multiple stocks simultaneously using a Vectorized Environment.
+* **[ ] Technical Indicators:** Integrate RSI, MACD, and Bollinger Bands into the observation space for richer feature sets.
+* **[ ] Institutional Backtesting:** Connect the agent to the Backtrader library to account for slippage and realistic commission structures.
 
-> **Disclaimer:** This tool is for research purposes only and is not cleared for clinical diagnosis.
+> **Disclaimer:** This project is for educational purposes only. It is not financial advice. The agent's performance on historical data does not guarantee future results in live markets.
